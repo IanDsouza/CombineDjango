@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+*.mo
+*~
+.coverage
+db.sqlite3
+uwsgi.ini
+log/**
+!log/placeholder
+Media/**
+!media/**/init.txt
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
+*.vscode
