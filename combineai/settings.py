@@ -25,8 +25,8 @@ SECRET_KEY = '7!rqi*2$tyv@n+(d*uicesik+a$%e*36#p^-xd+%+0@$=^)@5y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+#ALLOWED_HOSTS = ['rippedcoders.com:8002','rippedcoders.com']
+ALLOWED_HOSTS = ['rippedcoders.com']
 
 # Application definition
 
@@ -81,7 +81,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['127.0.0.1']
+
 
 
 # Password validation
