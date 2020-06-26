@@ -47,17 +47,17 @@ class Audio(models.Model):
 
     def get_json(self):
         result = {}
-        result["user"] = self.user.name
+        result["user"] = self.user
         result["audio_start"] = get_epoch(self.audio_start)
         result["audio_end"] = get_epoch(self.audio_end)
         return result
 
 
     def __unicode__(self):
-        return (str(self.user.name))
+        return (str(self.user))
 
     def __str__(self):
-        return self.user.name
+        return self.user
 
 
 
