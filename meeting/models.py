@@ -41,7 +41,7 @@ class Meeting(models.Model):
 
 class Audio(models.Model):
     user = models.ForeignKey('User',on_delete=models.CASCADE,null=True, blank=True)
-    meeeting = models.ForeignKey('Meeting',on_delete=models.CASCADE,null=True, blank=True)
+    meeting = models.ForeignKey('Meeting',on_delete=models.CASCADE,null=True, blank=True)
     audio_start = models.DateTimeField(blank=True, null=True)
     audio_end = models.DateTimeField(blank=True, null=True)
 
@@ -58,8 +58,6 @@ class Audio(models.Model):
 
     def __str__(self):
         return self.user.name
-
-
 
 
 

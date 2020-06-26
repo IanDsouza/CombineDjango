@@ -20,17 +20,21 @@ def all_users(request):
 @csrf_protect
 @csrf_exempt
 def get_user_count(request):
+    """ 
+    Accepts a list of partipants and returns the count of
+    number of times each participant spoke
+    """
     try:
         jsonObj = json.loads(request.body)
     except:
         return HttpResponse(json.dumps({"redirectConstant":'/', "validation": 'No data found', "status": False}), content_type="application/json")
+
+    #save clients users data 
     user_data = jsonObj.get('users')
     user_list = []
     for i in user_data:
-        print ("i",i)
         user_list.append(i["id"])
-
-    print("user list", user_list)        
+      
     query_set =  Audio.objects.filter(user__id__in=user_list)
     new_list = query_set.values('user__name').annotate(dcount=Count('user'))
 
@@ -49,14 +53,12 @@ def get_average_contrbution(request):
     user_data = jsonObj.get('users')
     user_list = []
     for i in user_data:
-        print ("i",i)
         user_list.append(i["id"])
 
     final_list = []
     for i in user_list:
         query_set = Audio.objects.filter(user__id = i)
         data = get_averate(list(query_set))
-        print("type", type(data))
         final_list.append(data)
 
     return HttpResponse(json.dumps({ "data": final_list, "status": True}), content_type="application/json")
@@ -67,9 +69,8 @@ def most_and_least_contribution(request):
     users = list(User.objects.all())
     user_list = []
     for i in users:
-        print ("i",i)
         user_list.append(i.get_json()["id"])
-    print ("all users", user_list)
+
 
     final_list = []
     for i in user_list:
@@ -78,16 +79,17 @@ def most_and_least_contribution(request):
         final_list.append(data)
 
     total = sum(item["percentage_contribution"] for item in final_list)
+
+
     if total is not 100:
         data_format ={ "name": "Others", "diff": 0, "percentage_contribution":  round(float((100 - total))) }
         final_list.append(data_format)
     
     most_and_least = { "most" : max(final_list, key=lambda x:x['diff']) , "least": min(final_list, key=lambda x:x['diff'])}  
+
     data = {}
     data["contribution"] = final_list
     data["most_and_least"] = most_and_least
-
-    
 
     return HttpResponse(json.dumps({ "data": data, "status": True}), content_type="application/json")
 
@@ -108,6 +110,10 @@ def get_overall_contribution(audios):
 
 
 def get_averate(audios):
+    """ 
+    Calculate the total time participant speaks each time from audio end - start
+    find average by / with total number of times spoken
+    """
     data_format ={ "name": "", "diff": 0, "count" : 0, "avg":0}
     count  = 0
     for i in audios:
@@ -120,7 +126,6 @@ def get_averate(audios):
     if count == 1:
         data_format["count"] = 1
     data_format["avg"] = data_format["diff"]/ data_format["count"]
-    print("final data format", data_format)
 
     return data_format
 
